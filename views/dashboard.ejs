@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Task Manager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>My Task Manager</h1>
+        <form action="/logout" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </header>
+
+    <main class="dashboard">
+        <h2>Welcome, <%= user.name %>!</h2>
+        <p>Organize your daily tasks and deadlines.</p>
+
+        <section class="task-form">
+            <h3>Add New Task</h3>
+
+            <form action="/tasks" method="POST">
+                <label for="title">Task Title</label>
+                <input type="text" id="title" name="title"
+                       placeholder="Enter task title" required>
+
+                <label for="description">Description</label>
+                <textarea id="description" name="description"
+                          placeholder="Enter task details"></textarea>
+
+                <label for="deadline">Deadline</label>
+                <input type="date" id="deadline" name="deadline"
+                       required>
+
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+
+        <section class="task-list">
+            <h3>My Tasks</h3>
+
+            <form action="/dashboard" method="GET">
+                <label for="status">Filter by Status</label>
+                <select id="status" name="status">
+                    <option value="all">All Tasks</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+
+            <% if (tasks.length === 0) { %>
+                <p>No tasks found. Add your first task!</p>
+            <% } %>
+
+            <% tasks.forEach(function(task) { %>
+                <article class="task-card">
+                    <h4><%= task.title %></h4>
+                    <p><%= task.description || 'No description' %></p>
+                    <p>
+                        Deadline:
+                        <%= new Date(task.deadline).toLocaleDateString() %>
+                    </p>
+                    <p>
+                        Status:
+                        <strong><%= task.status %></strong>
+                    </p>
+
+                    <form action="/tasks/<%= task.id %>/status"
+                          method="POST">
+                        <input type="hidden" name="status"
+                               value="<%= task.status === 'completed' ? 'pending' : 'completed' %>">
+                        <button type="submit">
+                            <%= task.status === 'completed'
+                                ? 'Mark Pending'
+                                : 'Mark Completed' %>
+                        </button>
+                    </form>
+
+                    <a href="/tasks/<%= task.id %>/edit">Edit</a>
+
+                    <form action="/tasks/<%= task.id %>/delete"
+                          method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                </article>
+            <% }); %>
+        </section>
+    </main>
+</body>
+</html>

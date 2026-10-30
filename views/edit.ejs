@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task - Task Manager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Task Manager</h1>
+        <h2>Edit Your Task</h2>
+
+        <form action="/tasks/<%= task.id %>/edit" method="POST">
+
+            <label for="title">Task Title</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="<%= task.title %>"
+                required
+            >
+
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+            ><%= task.description || '' %></textarea>
+
+            <label for="deadline">Deadline</label>
+            <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                value="<%= new Date(task.deadline).toISOString().split('T')[0] %>"
+                required
+            >
+
+            <button type="submit">Update Task</button>
+
+        </form>
+
+        <p>
+            <a href="/dashboard">Back to Dashboard</a>
+        </p>
+    </div>
+
+</body>
+</html>
