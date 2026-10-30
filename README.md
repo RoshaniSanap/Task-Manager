@@ -29,7 +29,7 @@ npm install
 5. Start the application:
 node server.js
 6. Open your browser and visit:
-"http://localhost:8080"
+"http://localhost:3000"
 
 Security
 Environment variables are stored in ".env", which is excluded from GitHub using ".gitignore".
